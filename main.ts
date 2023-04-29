@@ -1,4 +1,5 @@
-import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Setting } from 'obsidian';
+import { App, WorkspaceLeaf, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Setting } from 'obsidian';
+import { CSVView, VIEW_TYPE_CSV } from "./view"
 
 // Remember to rename these classes and interfaces!
 
@@ -19,7 +20,7 @@ export default class MyPlugin extends Plugin {
 		// This creates an icon in the left ribbon.
 		const ribbonIconEl = this.addRibbonIcon('dice', 'Sample Plugin', (evt: MouseEvent) => {
 			// Called when the user clicks the icon.
-			new Notice('This is a notice!');
+			new Notice('Hello CSV editor !!');
 		});
 		// Perform additional things with the ribbon
 		ribbonIconEl.addClass('my-plugin-ribbon-class');
@@ -27,6 +28,13 @@ export default class MyPlugin extends Plugin {
 		// This adds a status bar item to the bottom of the app. Does not work on mobile apps.
 		const statusBarItemEl = this.addStatusBarItem();
 		statusBarItemEl.setText('Status Bar Text');
+
+    this.registerView(
+      VIEW_TYPE_CSV,
+      (leaf: WorkspaceLeaf) => new CSVView(leaf)
+    );
+
+    this.registerExtensions(["csv"], VIEW_TYPE_CSV);
 
 		// This adds a simple command that can be triggered anywhere
 		this.addCommand({
